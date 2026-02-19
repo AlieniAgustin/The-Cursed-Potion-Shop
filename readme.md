@@ -1,59 +1,57 @@
-# 🧪 La Tienda de Pociones Malditas (The Cursed Potion Shop)
+# 🧪 The Cursed Potion Shop: Spring MVC Challenge
 
-## 📜 Descripción del Proyecto
-Bienvenido a la gestión de **"El Caldero Burbujeante"**, la tienda de alquimia más cuestionable del reino. Este sistema está diseñado para gestionar el inventario de brebajes mágicos, desde simples curas para la gripe hasta elixires prohibidos que podrían transformar al cliente en un sapo.
+## 📜 The Scenario
+Welcome to **"The Bubbling Cauldron,"** the most questionable alchemy shop in the kingdom. The Head Alchemist is brilliant but terrible at paperwork. He keeps brewing unstable mixtures and forgetting which ones are safe to sell.
 
-El objetivo del sistema es permitir al Alquimista Jefe (el usuario) administrar sus creaciones, manteniendo un control estricto sobre la peligrosidad de los productos para evitar... "incidentes" con el Ministerio de Magia.
-
----
-
-## 🎯 Objetivos del Sistema
-
-1.  **Centralizar el Inventario:** Mantener un registro actualizado de todas las pociones existentes en la tienda.
-2.  **Garantizar la Seguridad (Automática):** El sistema debe actuar como un "filtro de seguridad", detectando automáticamente mezclas demasiado inestables y marcándolas como ilegales antes de que salgan a la venta.
-3.  **Gestión Ágil:** Permitir la creación rápida de nuevos experimentos y la eliminación de evidencia (borrado de productos).
+The Ministry of Magic is coming for an inspection next week. Your task is to build a digital **Inventory Management System** using **Spring Boot** to organize the chaos, enforce safety regulations automatically, and help the shop avoid being shut down.
 
 ---
 
-## 📦 Entidad Principal: La Poción
+## 🎯 The Mission
+You must create a web application that allows the Alchemist to **Catalog**, **Create**, **View**, and **Destroy** potions. The system must act as a "safety filter," enforcing strict magic laws without human intervention.
 
-Cada producto en el sistema debe representar una Poción con, al menos, las siguientes características informativas:
+### 1. Inventory Management (The Catalog)
+The shop needs a central dashboard to view all current stock. The Alchemist needs to see the **Name**, **Effect**, **Risk Level**, and **Legal Status** of every item at a glance.
 
-* **Nombre:** Identificador comercial del brebaje.
-* **Efecto:** Descripción breve de lo que le hace al consumidor.
-* **Nivel de Riesgo:** Un valor numérico (escala 1-100) que determina la volatilidad y peligro de la mezcla.
-* **Estado Legal (Prohibida/Legal):** Indicador de si la venta de este artículo está permitida por la ley mágica vigente.
+### 2. The Brewing Process (Creation & Validation)
+When adding a new potion to the system, the following rules must be enforced strictly:
+* **Unique Naming:** No two potions can share the same name. If a duplicate is attempted, the system must reject it and warn the user.
+* **Volatility Index:** Every potion must have a defined **Risk Level** between **1 and 100**. Values outside this range are physically impossible and should generate an error.
+* **Automatic Censorship:** The Alchemist often brews dangerous things. If a potion is created with a **Risk Level greater than 90**, the system must **automatically** mark it as **"Illegal"** (Prohibited). If it is 90 or below, it is "Legal". This status cannot be chosen manually; it is determined by the risk.
 
----
+### 3. Emergency Protocol (Deletion)
+If an inspector arrives, the Alchemist needs a quick way to **remove** a potion from the inventory permanently.
 
-## ⚙️ Reglas de Negocio (Lógica del Dominio)
-
-El sistema debe hacer cumplir estrictamente las siguientes reglas sin intervención manual:
-
-### 1. La Regla de Seguridad Pública
-Si una poción es creada con un **Nivel de Riesgo superior a 90**:
-* El sistema debe marcarla **automáticamente** como **Prohibida (Ilegal)**.
-* Esta acción es irreversible durante la creación: la seguridad prevalece sobre la intención del usuario.
-
-### 2. Visibilidad de Advertencia
-Las pociones marcadas como **Prohibidas** deben ser claramente distinguibles en el listado general (visualización de alerta) para evitar que los dependientes las vendan por error.
+### 4. Incident Prevention (Error Handling)
+The application must be crash-proof. If the Alchemist enters invalid data (like a risk level of 200 or a duplicate name) or tries to view a potion that doesn't exist:
+* The system **must not** crash (no "Whitelabel Error Pages").
+* It must display a helpful, user-friendly error message explaining exactly what went wrong.
+* Redirects must handle messages correctly so the user knows if an action succeeded or failed.
 
 ---
 
-## 🚀 Requisitos Funcionales
+## 🛠 Technical Requirements
 
-### A. Módulo de Catálogo (Visualización)
-* El sistema debe mostrar un listado completo de todas las pociones en stock.
-* Debe permitir identificar rápidamente el nombre, efecto, riesgo y legalidad de cada ítem.
-* Debe resaltar visualmente los ítems peligrosos/ilegales.
+* **Framework:** Java Spring Boot (Maven).
+* **Architecture:** Model-View-Controller (MVC).
+* **Data Storage:** In-memory storage (Lists/Maps) is acceptable for this prototype. Database connection is not required yet.
+* **Frontend:** Server-side rendering using **Thymeleaf**.
 
-### B. Módulo del Caldero (Creación)
-* Debe existir una interfaz para registrar nuevas pociones.
-* El usuario debe poder ingresar el nombre, efecto y nivel de riesgo deseado.
-* Al procesar la creación, se deben aplicar las **Reglas de Negocio** antes de guardar el ítem en el inventario.
+---
 
-### C. Módulo de Limpieza (Eliminación)
-* El sistema debe permitir eliminar pociones del inventario (útil para cuando llega una inspección y hay que deshacerse de la evidencia).
+## 🚀 Expected Endpoints/Features
 
-### D. Navegación
-* El usuario debe poder moverse fluidamente entre el Catálogo y el Caldero a través de un menú de navegación unificado.
+The Ministry expects the following workflows to be functional:
+
+1.  **Catalog View:** A page listing all available potions.
+2.  **Creation Form:** A dedicated page to input new potion details.
+3.  **Details View:** A specific page to view the full dossier of a single potion by its ID.
+4.  **Disposal Action:** A mechanism to delete an item and return to the catalog with a confirmation message.
+
+---
+
+## 🏃‍♂️ How to Run the Application
+
+to do
+
+---
