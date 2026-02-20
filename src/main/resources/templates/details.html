@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Potion Details')}"></head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    <div th:replace="~{layout :: navbar}"></div>
+
+    <div class="container mt-5 flex-grow-1">
+        <div class="card shadow-lg mx-auto" style="max-width: 600px;">
+            <div class="card-header text-center" 
+                 th:classappend="${!potion.legal} ? 'bg-danger text-white' : 'bg-primary text-white'">
+                <h2 class="mb-0" th:text="${potion.name}">Name of the Potion</h2>
+            </div>
+            
+            <div class="card-body text-center p-4">
+                <h5 class="text-muted mb-3">Registration ID: <span th:text="${potion.id}"></span></h5>
+                
+                <h5 class="mt-3 fw-bold">State before the Ministry:</h5>
+                <span class="badge fs-5 mb-4" 
+                      th:classappend="${potion.legal} ? 'bg-success' : 'bg-danger'"
+                      th:text="${potion.legal} ? 'Approved (Legal)' : 'Prohibited (Illegal)'">State</span>
+                
+                <h5 class="fw-bold">Documented Effect:</h5>
+                <p class="lead mb-4" th:text="${potion.effect}">Effect...</p>
+                
+                <h5 class="fw-bold">Volatility Index (Risk):</h5>
+                <div class="progress mb-3" style="height: 30px;">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                         role="progressbar" 
+                         th:style="'width: ' + ${potion.levelOfRisk} + '%;'" 
+                         th:classappend="${potion.levelOfRisk > 90} ? 'bg-danger' : (${potion.levelOfRisk > 50} ? 'bg-warning text-dark' : 'bg-success')"
+                         th:text="${potion.levelOfRisk} + '%'"
+                         th:attr="aria-valuenow=${potion.levelOfRisk},aria-valuemin=1,aria-valuemax=100"></div>
+                </div>
+            </div>
+            
+            <div class="card-footer d-flex justify-content-between p-3 bg-white">
+                <a th:href="@{/catalog}" class="btn btn-secondary">Back to Catalog</a>
+                <a th:href="@{/delete(id=${potion.id})}" class="btn btn-danger"
+                   onclick="return confirm('Are you sure you want to destroy this potion?');">Delete</a>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{layout :: footer}"></div>
+
+</body>
+</html>
