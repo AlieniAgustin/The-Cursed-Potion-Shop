@@ -1,4 +1,4 @@
-# 🧪 The Cursed Potion Shop: Spring MVC Challenge
+# 🧪 The Cursed Potion Shop: Spring MVC Challenge (This readme is old; more things have been added. I'll update it later xd.)
 
 ## 📜 The Scenario
 Welcome to **"The Bubbling Cauldron,"** the most questionable alchemy shop in the kingdom. The Head Alchemist is brilliant but terrible at paperwork. He keeps brewing unstable mixtures and forgetting which ones are safe to sell.
