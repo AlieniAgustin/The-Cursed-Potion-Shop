@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Potions Catalog')}"></head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    <div th:replace="~{layout :: navbar}"></div>
+
+    <div class="container mt-5 flex-grow-1">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Potions Inventory</h1>
+            <a th:href="@{/create}" class="btn btn-success">+ New Potion</a>
+        </div>
+
+        <div th:if="${successMessage}" class="alert alert-success shadow-sm" th:text="${successMessage}"></div>
+        <div th:if="${errorMessage}" class="alert alert-danger shadow-sm" th:text="${errorMessage}"></div>
+
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col" th:each="p : ${inventory}">
+                <div class="card h-100 shadow-sm" 
+                     th:classappend="${!p.legal} ? 'border-danger bg-danger bg-opacity-10' : 'border-secondary'">
+                    
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="card-title fw-bold" th:text="${p.name}">Potion name</h5>
+                            <span class="badge" 
+                                  th:classappend="${p.legal} ? 'bg-success' : 'bg-danger'"
+                                  th:text="${p.legal} ? 'Legal' : 'Ilegal'">State</span>
+                        </div>
+                        <p class="card-text text-muted" th:text="${p.effect}">Effect of the potion...</p>
+                        <p class="card-text fw-bold">Risk: <span th:text="${p.levelOfRisk}"></span>/100</p>
+                    </div>
+                    
+                    <div class="card-footer bg-transparent border-0 d-flex justify-content-between pb-3">
+                        <a th:href="@{/details(id=${p.id})}" class="btn btn-sm btn-outline-primary">Details</a>
+                        <a th:href="@{/delete(id=${p.id})}" class="btn btn-sm btn-outline-danger" 
+                           onclick="return confirm('Are you sure you want to destroy this potion?');">Clear</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:if="${#lists.isEmpty(inventory)}" class="alert alert-warning text-center mt-4 shadow-sm">
+            There are no potions in your inventory. Go to the cauldron and brew some before the inspection!
+        </div>
+    </div>
+
+    <div th:replace="~{layout :: footer}"></div>
+
+</body>
+</html>
