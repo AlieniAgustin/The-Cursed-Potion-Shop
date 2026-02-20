@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('The Cauldron')}"></head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    <div th:replace="~{layout :: navbar}"></div>
+
+    <div class="container mt-5 flex-grow-1">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header bg-dark text-white text-center">
+                        <h3 class="mb-0">The Cauldron</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        
+                        <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+                        <form th:action="@{/create}" th:object="${potion}" method="post">
+                            <div class="mb-3">
+                                <label for="name" class="form-label fw-bold">Mixture Name</label>
+                                <input type="text" class="form-control" id="name" th:field="*{name}" required placeholder="Example: Filter of Living Dead">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="effect" class="form-label fw-bold">Magic Effect</label>
+                                <textarea class="form-control" id="effect" th:field="*{effect}" rows="3" required placeholder="Describe what the potion does..."></textarea>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="levelOfRisk" class="form-label fw-bold">Risk Level (1-100)</label>
+                                <input type="number" class="form-control" id="levelOfRisk" th:field="*{levelOfRisk}" required>
+                                <div class="form-text">Warning: Any risk above 90 will be automatically marked as ILLEGAL.</div>
+                            </div>
+                            
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-success btn-lg">Prepare Potion</button>
+                                <a th:href="@{/catalog}" class="btn btn-outline-secondary">Cancel</a>
+                            </div>
+                        </form>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{layout :: footer}"></div>
+
+</body>
+</html>
