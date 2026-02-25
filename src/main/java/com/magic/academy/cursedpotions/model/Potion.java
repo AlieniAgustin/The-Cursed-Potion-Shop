@@ -1,18 +1,36 @@
 package com.magic.academy.cursedpotions.model;
-
 import java.util.Objects;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "potions")
 public class Potion {
 
     /** The unique identifier of the potion. */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     /** The name of the potion. */
+    @Column(nullable = false, unique = true, length = 100)
     private String name;
+
     /** The effect or description of what the potion does. */
+    @Column(nullable = false, length = 500)
     private String effect;
+
     /** The risk level of the potion, ranging from 1 to 100. */
+    @Column(nullable = false)
     private int levelOfRisk;
+
     /** Indicates whether the potion is legal or not. */
+    @Column(nullable = false)
     private boolean legal;
 
     public Potion () { }
@@ -62,7 +80,6 @@ public class Potion {
     public int hashCode() {
         return Objects.hash(name, id, effect, levelOfRisk, legal);
     }
-
 
     /**
      * Returns a string representation of the potion with its ID, name, and risk level.
