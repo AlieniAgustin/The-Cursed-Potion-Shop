@@ -1,9 +1,6 @@
 package com.magic.academy.cursedpotions.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
 
 import org.springframework.stereotype.Service;
 
@@ -11,6 +8,7 @@ import com.magic.academy.cursedpotions.exception.InvalidRiskException;
 import com.magic.academy.cursedpotions.exception.PotionAlreadyExistsException;
 import com.magic.academy.cursedpotions.exception.PotionNotFoundException;
 import com.magic.academy.cursedpotions.model.Potion;
+import com.magic.academy.cursedpotions.repository.PotionRepository;
 
 /**
  * Service for managing potions inventory and operations.
@@ -18,17 +16,17 @@ import com.magic.academy.cursedpotions.model.Potion;
 @Service
 public class PotionService {
 
-    /** Counter for generating unique potion IDs. */
-    private Long nextId;
-    /** Storage for potions indexed by their ID. */
-    private Map<Long,Potion> inventory;
+    /**
+     * Repository used to persist and query potions.
+     */
+    private final PotionRepository potionRepository;
 
     /**
-     * Initializes the service with an empty inventory and starting ID.
+     * Constructs a new PotionService with the given repository.
+     * @param potionRepository repository used for potion persistence and queries
      */
-    public PotionService () {
-        inventory = new HashMap<>();
-        nextId = 1L;
+    public PotionService (PotionRepository potionRepository) {
+        this.potionRepository = potionRepository;
     }
 
     /**
@@ -39,10 +37,9 @@ public class PotionService {
      */
     public void addPotion (Potion potion) {
         validatePotion(potion);
-        assignId(potion);
         auditRisk(potion);
-        Long id = potion.getId();
-        inventory.put(id,potion);
+
+        potionRepository.save(potion);
     }
 
     /**
@@ -50,7 +47,7 @@ public class PotionService {
      * @return a list of all potions
      */
     public List<Potion> getInventory () {
-        return new ArrayList<>(inventory.values());
+        return potionRepository.findAll();
     }
 
     /**
@@ -60,9 +57,8 @@ public class PotionService {
      * @throws PotionNotFoundException if potion not found
      */
     public Potion findPotionById (Long id) {
-        ensurePotionExists(id);
-
-        return inventory.get(id);
+            return potionRepository.findById(id)
+                .orElseThrow(() -> new PotionNotFoundException(id));
     }
 
     /**
@@ -71,9 +67,10 @@ public class PotionService {
      * @throws PotionNotFoundException if potion not found
      */
     public void removePotionById (Long id) {
-        ensurePotionExists(id);
-
-        inventory.remove(id);
+        if (!potionRepository.existsById(id))
+            throw new PotionNotFoundException(id);
+    
+        potionRepository.deleteById(id); 
     }
 
     /**
@@ -87,31 +84,9 @@ public class PotionService {
         if (levelOfRisk < 1 || levelOfRisk > 100)
             throw new InvalidRiskException();
 
-        String name = potion.getName();
-        if (existsByName(name)) 
+        if (potionRepository.existsByName(potion.getName())) {
             throw new PotionAlreadyExistsException();
-    }
-
-    /**
-     * Checks if a potion with the given name exists in inventory.
-     * @param name the potion name
-     * @return true if exists, false otherwise
-     */
-    private boolean existsByName (String name) {
-        for (Potion potion : inventory.values()) 
-            if (potion.getName().equals(name))
-                return true;
-
-        return false;
-    }
-
-    /**
-     * Assigns a unique ID to the potion and increments the counter.
-     * @param potion the potion to assign ID to
-     */
-    private void assignId (Potion potion) {
-        potion.setId(nextId);
-        nextId++;
+        }
     }
 
     /**
@@ -121,15 +96,5 @@ public class PotionService {
     private void auditRisk (Potion potion) {
         int levelOfRisk = potion.getLevelOfRisk();
         potion.setLegal(levelOfRisk <= 90);
-    }
-
-    /**
-     * Verifies that a potion exists in inventory.
-     * @param id the potion ID
-     * @throws PotionNotFoundException if potion does not exist
-     */
-    private void ensurePotionExists (Long id) {
-        if (!inventory.containsKey(id))
-            throw new PotionNotFoundException(id);   
     }
 }
