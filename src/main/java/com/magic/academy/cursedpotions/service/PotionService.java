@@ -57,8 +57,8 @@ public class PotionService {
      * @throws PotionNotFoundException if potion not found
      */
     public Potion findPotionById (Long id) {
-            return potionRepository.findById(id)
-                .orElseThrow(() -> new PotionNotFoundException(id));
+        return potionRepository.findById(id)
+            .orElseThrow(() -> new PotionNotFoundException(id));
     }
 
     /**
