@@ -7,6 +7,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "potions")
@@ -18,14 +22,20 @@ public class Potion {
     private Long id;
 
     /** The name of the potion. */
+    @NotBlank(message = "The potion name cannot be empty")
+    @Size(max = 100, message = "The name must be less than 100 characters")
     @Column(nullable = false, unique = true, length = 100)
     private String name;
 
     /** The effect or description of what the potion does. */
+    @NotBlank(message = "The effect description is required")
+    @Size(max = 500, message = "The effect must be less than 500 characters")
     @Column(nullable = false, length = 500)
     private String effect;
 
     /** The risk level of the potion, ranging from 1 to 100. */
+    @Min(value = 1, message = "Risk level must be at least 1")
+    @Max(value = 100, message = "Risk level cannot exceed 100")
     @Column(nullable = false)
     private int levelOfRisk;
 

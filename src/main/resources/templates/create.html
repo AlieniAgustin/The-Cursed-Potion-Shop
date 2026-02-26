@@ -19,17 +19,26 @@
                         <form th:action="@{/create}" th:object="${potion}" method="post">
                             <div class="mb-3">
                                 <label for="name" class="form-label fw-bold">Mixture Name</label>
-                                <input type="text" class="form-control" id="name" th:field="*{name}" required placeholder="Example: Filter of Living Dead">
+                                <input type="text" class="form-control" id="name" th:field="*{name}" 
+                                       th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''" 
+                                       required placeholder="Example: Filter of Living Dead">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
                             </div>
                             
                             <div class="mb-3">
                                 <label for="effect" class="form-label fw-bold">Magic Effect</label>
-                                <textarea class="form-control" id="effect" th:field="*{effect}" rows="3" required placeholder="Describe what the potion does..."></textarea>
+                                <textarea class="form-control" id="effect" th:field="*{effect}" rows="3" 
+                                          th:classappend="${#fields.hasErrors('effect')} ? 'is-invalid' : ''" 
+                                          required placeholder="Describe what the potion does..."></textarea>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('effect')}" th:errors="*{effect}"></div>
                             </div>
                             
                             <div class="mb-4">
                                 <label for="levelOfRisk" class="form-label fw-bold">Risk Level (1-100)</label>
-                                <input type="number" class="form-control" id="levelOfRisk" th:field="*{levelOfRisk}" required>
+                                <input type="number" class="form-control" id="levelOfRisk" th:field="*{levelOfRisk}" 
+                                       th:classappend="${#fields.hasErrors('levelOfRisk')} ? 'is-invalid' : ''" 
+                                       required>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('levelOfRisk')}" th:errors="*{levelOfRisk}"></div>
                                 <div class="form-text">Warning: Any risk above 90 will be automatically marked as ILLEGAL.</div>
                             </div>
                             

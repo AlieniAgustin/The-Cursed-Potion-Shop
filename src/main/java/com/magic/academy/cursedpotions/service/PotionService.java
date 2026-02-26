@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.magic.academy.cursedpotions.exception.InvalidRiskException;
 import com.magic.academy.cursedpotions.exception.PotionAlreadyExistsException;
 import com.magic.academy.cursedpotions.exception.PotionNotFoundException;
 import com.magic.academy.cursedpotions.model.Potion;
@@ -80,10 +79,6 @@ public class PotionService {
      * @throws PotionAlreadyExistsException if name already exists
      */
     private void validatePotion (Potion potion) {
-        int levelOfRisk = potion.getLevelOfRisk();
-        if (levelOfRisk < 1 || levelOfRisk > 100)
-            throw new InvalidRiskException();
-
         if (potionRepository.existsByName(potion.getName())) {
             throw new PotionAlreadyExistsException();
         }

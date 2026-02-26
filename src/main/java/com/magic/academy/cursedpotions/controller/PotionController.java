@@ -2,17 +2,19 @@ package com.magic.academy.cursedpotions.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.magic.academy.cursedpotions.exception.InvalidRiskException;
 import com.magic.academy.cursedpotions.exception.PotionAlreadyExistsException;
 import com.magic.academy.cursedpotions.exception.PotionNotFoundException;
 import com.magic.academy.cursedpotions.model.Potion;
 import com.magic.academy.cursedpotions.service.PotionService;
+
+import jakarta.validation.Valid;
 
 
 /**
@@ -64,12 +66,15 @@ public class PotionController {
      * @return redirect to catalog on success, or return to form on error
      */
     @PostMapping ("/create")
-    public String createPotion (@ModelAttribute Potion potion, Model model) {
+    public String createPotion (@Valid @ModelAttribute Potion potion, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors())
+            return "create";
+        
         try {
             potionService.addPotion(potion);
             
             return "redirect:/catalog";            
-        } catch (InvalidRiskException | PotionAlreadyExistsException e) {
+        } catch (PotionAlreadyExistsException e) {
             model.addAttribute("errorMessage", e.getMessage());
 
             return "create";
