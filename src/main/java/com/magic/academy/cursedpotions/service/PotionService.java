@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.magic.academy.cursedpotions.exception.InvalidRiskException;
 import com.magic.academy.cursedpotions.exception.PotionAlreadyExistsException;
 import com.magic.academy.cursedpotions.exception.PotionNotFoundException;
 import com.magic.academy.cursedpotions.model.Potion;
