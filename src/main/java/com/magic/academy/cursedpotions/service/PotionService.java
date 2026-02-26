@@ -80,10 +80,6 @@ public class PotionService {
      * @throws PotionAlreadyExistsException if name already exists
      */
     private void validatePotion (Potion potion) {
-        int levelOfRisk = potion.getLevelOfRisk();
-        if (levelOfRisk < 1 || levelOfRisk > 100)
-            throw new InvalidRiskException();
-
         if (potionRepository.existsByName(potion.getName())) {
             throw new PotionAlreadyExistsException();
         }
