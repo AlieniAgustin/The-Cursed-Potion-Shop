@@ -45,11 +45,10 @@ public class Potion {
 
     public Potion () { }
 
-    public Potion (String name, String effect, int levelOfRisk, boolean legal) {
+    public Potion (String name, String effect, int levelOfRisk) {
         this.name = name;
         this.effect = effect;
         this.levelOfRisk = levelOfRisk;
-        this.legal = legal;
     }
 
     public Potion (Long id, String name, String effect, int levelOfRisk, boolean legal) {
