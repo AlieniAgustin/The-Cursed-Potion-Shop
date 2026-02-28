@@ -1,57 +1,68 @@
-# 🧪 The Cursed Potion Shop: Spring MVC Challenge (This readme is old; more things have been added. I'll update it later xd.)
+# 🧪 The Cursed Potion Shop (Spring Boot Learning Project)
 
-## 📜 The Scenario
-Welcome to **"The Bubbling Cauldron,"** the most questionable alchemy shop in the kingdom. The Head Alchemist is brilliant but terrible at paperwork. He keeps brewing unstable mixtures and forgetting which ones are safe to sell.
+## 📖 About This Project
+This project was developed as a hands-on exercise to learn and master the fundamentals of **Spring Boot**. It is a complete MVC (Model-View-Controller) web application designed to manage an inventory of magical potions, enforcing strict business rules and data validation.
 
-The Ministry of Magic is coming for an inspection next week. Your task is to build a digital **Inventory Management System** using **Spring Boot** to organize the chaos, enforce safety regulations automatically, and help the shop avoid being shut down.
-
----
-
-## 🎯 The Mission
-You must create a web application that allows the Alchemist to **Catalog**, **Create**, **View**, and **Destroy** potions. The system must act as a "safety filter," enforcing strict magic laws without human intervention.
-
-### 1. Inventory Management (The Catalog)
-The shop needs a central dashboard to view all current stock. The Alchemist needs to see the **Name**, **Effect**, **Risk Level**, and **Legal Status** of every item at a glance.
-
-### 2. The Brewing Process (Creation & Validation)
-When adding a new potion to the system, the following rules must be enforced strictly:
-* **Unique Naming:** No two potions can share the same name. If a duplicate is attempted, the system must reject it and warn the user.
-* **Volatility Index:** Every potion must have a defined **Risk Level** between **1 and 100**. Values outside this range are physically impossible and should generate an error.
-* **Automatic Censorship:** The Alchemist often brews dangerous things. If a potion is created with a **Risk Level greater than 90**, the system must **automatically** mark it as **"Illegal"** (Prohibited). If it is 90 or below, it is "Legal". This status cannot be chosen manually; it is determined by the risk.
-
-### 3. Emergency Protocol (Deletion)
-If an inspector arrives, the Alchemist needs a quick way to **remove** a potion from the inventory permanently.
-
-### 4. Incident Prevention (Error Handling)
-The application must be crash-proof. If the Alchemist enters invalid data (like a risk level of 200 or a duplicate name) or tries to view a potion that doesn't exist:
-* The system **must not** crash (no "Whitelabel Error Pages").
-* It must display a helpful, user-friendly error message explaining exactly what went wrong.
-* Redirects must handle messages correctly so the user knows if an action succeeded or failed.
+### 🛠️ Technologies & Concepts Learned
+* **Spring Web:** Building web applications, handling HTTP requests (`@GetMapping`, `@PostMapping`), and managing data flow with Controllers.
+* **Thymeleaf:** Server-side rendering engine to dynamically generate HTML views.
+* **Spring Data JPA & MySQL:** Connecting to a real relational database, mapping Java objects to database tables (`@Entity`), and performing CRUD operations using Repository interfaces.
+* **Jakarta Bean Validation:** Automatically validating incoming form data using declarative annotations (`@NotBlank`, `@Min`, `@Max`, `@Size`).
+* **Spring Boot DevTools:** Improving the development experience with live reloading.
+* **Bootstrap 5:** Designing a clean, responsive, and user-friendly web interface.
+* **Comprehensive Testing:**
+    * **Unit Testing:** Using **JUnit 5** and **Mockito** (`@Mock`, `@InjectMocks`) to test business logic in the Service layer in complete isolation.
+    * **Integration Testing:** Using `@SpringBootTest` and **MockMvc** to simulate HTTP requests, test web endpoints, model attributes, and flash attributes (`RedirectAttributes`).
 
 ---
 
-## 🛠 Technical Requirements
-
-* **Framework:** Java Spring Boot (Maven).
-* **Architecture:** Model-View-Controller (MVC).
-* **Data Storage:** In-memory storage (Lists/Maps) is acceptable for this prototype. Database connection is not required yet.
-* **Frontend:** Server-side rendering using **Thymeleaf**.
-
----
-
-## 🚀 Expected Endpoints/Features
-
-The Ministry expects the following workflows to be functional:
-
-1.  **Catalog View:** A page listing all available potions.
-2.  **Creation Form:** A dedicated page to input new potion details.
-3.  **Details View:** A specific page to view the full dossier of a single potion by its ID.
-4.  **Disposal Action:** A mechanism to delete an item and return to the catalog with a confirmation message.
+## 🔮 Domain Rules (Business Logic)
+The Ministry of Magic has strict regulations for alchemy. Every potion managed by this system follows these rules:
+* **Identification:** Every potion has a unique, automatically generated `ID` and a strictly **unique Name**.
+* **Effect:** A required description of the potion's magical properties.
+* **Volatility Index (Risk Level):** The risk level must be an integer strictly between **1 and 100**.
+* **Automatic Legality Assessment:** The Alchemist cannot decide if a potion is legal or not. The system calculates it automatically:
+    * If `1 <= Risk Level <= 90` ➡️ The potion is marked as **Legal**.
+    * If `Risk Level > 90` ➡️ The potion is classified as **Illegal**.
 
 ---
 
-## 🏃‍♂️ How to Run the Application
-
-to do
+## 🚀 Features
+1.  **Catalog View:** A main dashboard displaying all potions currently in the inventory, highlighting illegal ones.
+2.  **Brew a Potion (Create):** A form to prepare a new potion. It includes real-time validation feedback and prevents the creation of duplicate names.
+3.  **Potion Details:** A specific view to inspect the complete dossier of a single potion by its ID.
+4.  **Destroy Potion (Delete):** A mechanism to permanently remove a potion from the database, redirecting with success or error flash messages.
 
 ---
+
+## 💻 How to Run the Application
+
+Since this project uses the Maven Wrapper (`mvnw`), you don't need to install Maven globally on your system. These instructions are tailored for **Linux / VS Code / Java 21**.
+
+### 1. Database Setup
+Ensure you have MySQL running on your local machine. Create an empty database named `cursed_potions_db`.
+
+**⚠️ SECURITY NOTE:** For security reasons, real database credentials are not tracked in this repository. You must configure your local `src/main/resources/application.properties` file with your own MySQL username and password:
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/cursed_potions_db
+spring.datasource.username=YOUR_MYSQL_USERNAME_HERE
+spring.datasource.password=YOUR_MYSQL_PASSWORD_HERE
+spring.jpa.hibernate.ddl-auto=update
+```
+
+### 2. Start the Server
+Open your integrated terminal (e.g., in VS Code) at the root of the project folder and run:
+```
+./mvnw spring-boot:run
+```
+
+### 3. Access the Web App
+Once the console shows that the application has started, open your web browser and navigate to:
+http://localhost:8080/catalog
+
+### 4. Run Tests
+To verify that all business rules and web controllers are working correctly, you can run the automated test suite (Unit and Integration tests) by executing:
+```
+./mvnw test
+```
